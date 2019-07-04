@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Robotics</title>
+    <style>
+      body {
+        font-family: Helvetica, sans-serif;
+        display: flex;
+      }
+
+      #canvas_div {
+        flex: 60%;
+        padding: 10px;
+      }
+
+      #info_div {
+        flex: 40%;
+        padding: 5%;
+        /*background-color: #b0b0b0;*/
+        min-height: 1em;
+        min-width: 200px;
+      }
+    </style>
+    <script src="../js/grid.js">        </script>
+    <script src="../js/button.js">      </script>
+    <script src="../js/brushfire.js">   </script>
+    <script src="../js/wavefront.js">   </script>
+  </head>
+<body>
+<div id=canvas_div>
+  <h3>Brushfire algorithm</h3>
+  <canvas id="canvas1" width="512" height="512">
+  Your browser does not support the HTML5 canvas tag.</canvas>
+
+  <input id="stepButton" type="button" onclick="step_button(gr, bf, c1, info)" value="Step"></input>
+  <input id="playButton" type="button" onclick="play_button(gr, bf, c1, info)" value="Play"></input>
+</div>
+
+<div id=info_div> </div>
+
+<script>
+//window.requestAnimationFrame(animate);
+
+var c1 = document.getElementById("canvas1");
+var info = document.getElementById("info_div");
+
+// resolution random between 8 and 32
+res = Math.floor(Math.random()*3) + 3;
+res = Math.pow(2, res);
+
+// number of obstacles is half of resolution
+// size of obstacles is a quarter of resolution
+let gr = new Grid(512, res, res/2, res/4);
+let bf = new Brushfire(gr);
+gr.draw(c1);
+</script>
+</body>
+</html>
