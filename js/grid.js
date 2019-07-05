@@ -10,6 +10,7 @@ class Grid {
 		this.goal_colour = "rgba(  0,  80, 180, 0.8)";
 		this.init_colour = "rgba(230,  30, 100, 0.8)";
 		this.path_colour = "rgba(255, 235,  60, 0.7)";
+		this.background  = "rgba(255, 255, 255,    0)";
 
 		this.values = [];
 		for(let i = 0; i < this.res; ++i) {
@@ -96,7 +97,7 @@ class Grid {
 		let y = cell[1];
 		this.ctx.fillStyle = colour;
 		this.ctx.fillRect(x*this.cell_size, y*this.cell_size, this.cell_size, this.cell_size);
-		this.ctx.fillStyle = "rgba(255, 255, 255, 0)";
+		this.ctx.fillStyle = this.background;
 	}
 
 	write_cell(cell, text) {
@@ -105,7 +106,7 @@ class Grid {
 		this.ctx.fillStyle = "black";
 		this.ctx.font = (this.cell_size/2).toString() + "px Arial";
 		this.ctx.fillText(text, (x+.25)*this.cell_size, (y+.75)*this.cell_size);
-		this.ctx.fillStyle = "rgba(255, 255, 255, 0)";
+		this.ctx.fillStyle = this.background;
 	}
 
 	draw(canvas) {
@@ -114,7 +115,7 @@ class Grid {
 		
 		this.ctx = canvas.getContext("2d");
 		// Background colour
-		this.ctx.fillStyle = "rgba(255, 255, 255, 0)";
+		this.ctx.fillStyle = this.background;
 
 		// Draw grid:
 		for(let i = 0; i <= this.res; ++i) {
@@ -160,21 +161,18 @@ class Grid {
 	}
 
 	update() {
-		// Draw path:
-		// for(let c of this.path) {
-		// 	this.colour_cell(c, this.path_colour)
-		// }
-
-		// Write cell values
 		while(this.update_cells.length > 0) {
 			let c = this.update_cells.pop();
 			this.clear_cell(c);
+
+			// if goal or init are updated, they must be coloured again.
 			if(c[0] == this.goal[0] && c[1] == this.goal[1]) {
 				this.colour_cell(c, this.goal_colour);
 			}
 			if(c[0] == this.init[0] && c[1] == this.init[1]) {
 				this.colour_cell(c, this.init_colour);
 			}
+			// if the cell is from the path, it must be coloured and its value written.
 			if(this.path.includes(c)) {
 				this.colour_cell(c, this.path_colour);
 			}
