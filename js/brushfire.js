@@ -80,6 +80,11 @@ class Brushfire {
 	}
 
 	step_path() {
+		if(this.iteration > this.grid.res*4) {
+			console.log("timeout :(");
+			this.path = true;
+			console.log("DONE");
+		}
 		let neighbours = this.grid.get_neighbours(this.current_pos);
 
 		for (let n of neighbours) {
