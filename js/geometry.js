@@ -146,34 +146,34 @@ function polygons_intersect(p, q) {
 // Returns true if the point p lies inside the polygon[] with n vertices 
 function inside_polygon(p, polygon, infinite) 
 { 
-    // There must be at least 3 vertices in polygon[] 
-    if (polygon.length < 3)  return false; 
+	// There must be at least 3 vertices in polygon[] 
+	if (polygon.length < 3)  return false; 
   
-    // Create a point for line segment from p to infinite 
-    let extreme = [1024, p[1]]; 
+	// Create a point for line segment from p to infinite 
+	let extreme = [1024, p[1]]; 
   
-    // Count intersections of the above line with sides of polygon 
-    let count = 0;
-    let i = 0; 
-    do { 
-        let next = (i+1)%polygon.length; 
+	// Count intersections of the above line with sides of polygon 
+	let count = 0;
+	let i = 0; 
+	do { 
+		let next = (i+1)%polygon.length; 
   
-        // Check if the line segment from 'p' to 'extreme' intersects 
-        // with the line segment from 'polygon[i]' to 'polygon[next]' 
-        if (line_segments_intersect(polygon[i], polygon[next], p, extreme)) { 
-            // If the point 'p' is colinear with line segment 'i-next', 
-            // then check if it lies on segment. If it lies, return true, 
-            // otherwise false 
-            if (orientation(polygon[i], p, polygon[next]) == 0) 
-               return false;
+		// Check if the line segment from 'p' to 'extreme' intersects 
+		// with the line segment from 'polygon[i]' to 'polygon[next]' 
+		if (line_segments_intersect(polygon[i], polygon[next], p, extreme)) { 
+			// If the point 'p' is colinear with line segment 'i-next', 
+			// then check if it lies on segment. If it lies, return true, 
+			// otherwise false 
+			if (orientation(polygon[i], p, polygon[next]) == 0) 
+			   return false;
   
-            ++count; 
-        } 
-        i = next; 
-    } while (i != 0); 
+			++count; 
+		} 
+		i = next; 
+	} while (i != 0); 
   
-    // Return true if count is odd, false otherwise
-    return count%2 == 1;
+	// Return true if count is odd, false otherwise
+	return count%2 == 1;
 } 
 
 function generatePolygon( ctrX, ctrY, aveRadius, irregularity, spikeyness, numVerts ) {
@@ -219,24 +219,30 @@ function generatePolygon( ctrX, ctrY, aveRadius, irregularity, spikeyness, numVe
 
 function intersect_polygon(r, poly) {
 	let i = 0; 
-    do { 
-        let next = (i+1)%poly.length; 
+	do { 
+		let next = (i+1)%poly.length; 
   
-        // Check if the line segment from 'p' to 'extreme' intersects 
-        // with the line segment from 'poly[i]' to 'poly[next]' 
-        if((r[0] == poly[i] && r[1] == poly[next]) || (r[1] == poly[i] && r[0] == poly[next])) {
-        	return false;
-        }
-        if (line_segments_intersect3(poly[i], poly[next], r[0], r[1])) { 
-            return true;
-        } 
-        i = next; 
-    } while (i != 0);
-    return false;
+		// Check if the line segment from 'p' to 'extreme' intersects 
+		// with the line segment from 'poly[i]' to 'poly[next]' 
+		if((r[0] == poly[i] && r[1] == poly[next]) || (r[1] == poly[i] && r[0] == poly[next])) {
+			return false;
+		}
+		if (line_segments_intersect3(poly[i], poly[next], r[0], r[1])) { 
+			return true;
+		} 
+		i = next; 
+	} while (i != 0);
+	return false;
 }
 
 function euclidean_distance(p, q) {
 	let a = p[0] - q[0];
 	let b = p[1] - q[1];
 	return Math.sqrt( a*a + b*b );
+}
+
+function vertex_equals(v1, v2) {
+	let ex = Math.abs(v1[0] - v2[0]);
+	let ey = Math.abs(v1[1] - v2[1]);
+	return (ex < 0.01 && ey < 0.01);
 }

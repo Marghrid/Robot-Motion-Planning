@@ -3,24 +3,24 @@ class Environment {
 		this.num_obst = num_obst;
 		this.size = size;
 		this.obstacles = [];
-		this.update_edges = [];
+		this.edges = [];
+		this.path = [];	
 		this.obst_colour = "rgba(170, 170, 170, 0.95)";
 		this.goal_colour = "rgba(  0,  80, 180,  0.8)";
 		this.init_colour = "rgba(230,  30, 100,  0.8)";
-		this.path_colour = "rgba(0,   150,  13,  0.8)";
+		this.edge_colour = "rgba(0,   150,  13,  0.8)";
+		this.path_colour = "rgba(255, 235,  60,  0.7)";
 		this.background  = "rgba(255, 255, 255,    0)";
 
 		this.generate_obstacles();
-		console.log("obstacles:");
-		console.log(this.obstacles);
 
 		this.goal = [0, 0]
 		this.init = [0, 0]
 
 		while(euclidean_distance(this.goal, this.init) < this.size 
 			||  this.inside_obstacle(this.init) || this.inside_obstacle(this.goal)) {
-			this.goal = [Math.random() * (this.size*0.9) + this.size*0.05, Math.random() * (this.size*0.9) + this.size*0.05];
-			this.init = [Math.random() * (this.size*0.9) + this.size*0.05, Math.random() * (this.size*0.9) + this.size*0.05];
+				this.goal = [Math.random() * (this.size*0.9) + this.size*0.05, Math.random() * (this.size*0.9) + this.size*0.05];
+				this.init = [Math.random() * (this.size*0.9) + this.size*0.05, Math.random() * (this.size*0.9) + this.size*0.05];
 		}
 	}
 
@@ -46,19 +46,32 @@ class Environment {
 	}
 
 	update() {
-		if(this.update_edges.length == 0)
-			return;
+		if(this.edges.length > 0) {
+			let e = this.edges.pop();
+			this.ctx.strokeStyle = this.edge_colour;
+			this.ctx.beginPath();
+			this.ctx.moveTo(e[0][0], e[0][1]);
+			this.ctx.lineTo(e[1][0], e[1][1]);
+			this.ctx.stroke();
+			this.ctx.strokeStyle = this.background;
+		} 
+		else if(this.path.length > 1) {
+			let v = this.path.shift(); //pop from the beginning;
+			this.ctx.strokeStyle = this.path_colour;
+			this.ctx.lineWidth = 5;
+			this.ctx.beginPath();
+			this.ctx.moveTo(v[0], v[1]);
+			this.ctx.lineTo(this.path[0][0], this.path[0][1]);
+			this.ctx.stroke();
 
-		let e = this.update_edges.pop();
-		console.log(this.update_edges);
-		console.log(e);
-
-		this.ctx.strokeStyle = this.path_colour;
-		this.ctx.beginPath();
-		this.ctx.moveTo(e[0][0], e[0][1]);
-		this.ctx.lineTo(e[1][0], e[1][1]);
-		this.ctx.stroke();
-		this.ctx.strokeStyle = this.background;
+			this.ctx.lineWidth = 1;
+			this.ctx.strokeStyle = this.edge_colour;
+			this.ctx.beginPath();
+			this.ctx.moveTo(v[0], v[1]);
+			this.ctx.lineTo(this.path[0][0], this.path[0][1]);
+			this.ctx.stroke();
+			this.ctx.strokeStyle = this.background;
+		}
 	}
 
 	valid_obstacle(poly) {
@@ -68,16 +81,15 @@ class Environment {
 			}
 		}
 		if(polygons_intersect(poly, [[0,0], [0,this.size], [this.size, this.size], [this.size,0]])) {
-				return false;
-			}
+			return false;
+		}
 		return true;
 	}
 
 	inside_obstacle(p) {
-		for(let obst of this.obstacles) {
-			if(inside_polygon(p, obst))
-				return true;
-		}
+		for(let obst of this.obstacles)
+			if(inside_polygon(p, obst)) return true;
+
 		return false;
 	}
 

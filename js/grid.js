@@ -19,10 +19,6 @@ class Grid {
 
 		this.generate_obstacles();
 
-		// DEBUG
-		for(let i = 0; i < this.res; ++i) {
-		}
-
 		this.goal = [0, 0]
 		this.init = [0, 0]
 
@@ -31,9 +27,6 @@ class Grid {
 			this.goal = [Math.floor(Math.random()*this.res), Math.floor(Math.random()*this.res)];
 			this.init = [Math.floor(Math.random()*this.res), Math.floor(Math.random()*this.res)];
 		}
-
-		// this.set_value(this.init, -1);
-		// this.set_value(this.goal, -2);
 	}
 
 	distance(cell1, cell2) {
@@ -80,7 +73,6 @@ class Grid {
 						break;
 					}
 				}
-
 				this.obstacles.push([x,y]);
 			}
 		}
@@ -192,14 +184,10 @@ class Grid {
 		let x = cell[0];
 		let y = cell[1];
 		
-		if (x < this.res-1)
-			neighbours.push([x+1,y]);
-		if (x > 0)
-			neighbours.push([x-1,y]);
-		if (y < this.res-1)
-			neighbours.push([x,y+1]);
-		if (y > 0)
-			neighbours.push([x,y-1]);
+		if (x < this.res-1)  neighbours.push([x+1,y]);
+		if (x > 0)           neighbours.push([x-1,y]);
+		if (y < this.res-1)  neighbours.push([x,y+1]);
+		if (y > 0)           neighbours.push([x,y-1]);
 
 		return neighbours
 	}
