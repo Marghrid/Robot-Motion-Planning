@@ -8,6 +8,7 @@ class Brushfire {
 		this.repulsive = false;
 		this.attractive = false;
 		this.path = false;
+		this.status = "";
 	}
 
 	step() {
@@ -83,7 +84,7 @@ class Brushfire {
 		if(this.iteration > this.grid.res*4) {
 			console.log("timeout :(");
 			this.path = true;
-			console.log("DONE");
+			this.status = "Timeout. Stuck at a local minimum. No path found.";
 		}
 		let neighbours = this.grid.get_neighbours(this.current_pos);
 
@@ -93,13 +94,15 @@ class Brushfire {
 		let next = this.grid.max_value_cell(neighbours);
 		if (next[0] == this.grid.goal[0] && next[1] == this.grid.goal[1]) {
 			this.current_pos = this.goal;
+			console.log("Done :)");
 			this.path = true;
-			console.log("DONE");
+			this.status = "Path found. Length: " + (this.grid.path.length + 1).toString();
 			return;
 		}
 		if (this.grid.get_value(next) < this.grid.get_value(this.current_pos)) {
 			console.log("Local minimum :(");
 			this.path = true;
+			this.status = "Stuck at a local minimum. No path found.";
 			return;
 		}
 		this.current_pos = next;

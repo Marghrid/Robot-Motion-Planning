@@ -5,7 +5,7 @@ class Wavefront {
 		this.grid.set_value(this.grid.goal, 2);
 		this.iteration = 2;
 		this.current_pos = this.grid.init;
-
+		this.status = "Unsolved."
 		this.attractive = false;
 		this.path = false;
 	}
@@ -56,6 +56,7 @@ class Wavefront {
 		if (next[0] == this.grid.goal[0] && next[1] == this.grid.goal[1]) {
 			this.current_pos = this.goal;
 			this.path = true;
+			this.status = "Path found. Length: " + (this.grid.path.length + 1).toString();
 			console.log("DONE");
 			return;
 		}

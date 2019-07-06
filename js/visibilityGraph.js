@@ -1,14 +1,11 @@
 class VisibilityGraph {
 	constructor(env) {
 		this.env = env;
-		this.vertices = [this.env.init, this.env.goal];
 		this.iteration = 0;
 		this.current_pos = this.env.init;
-		for(let obst of this.env.obstacles) {
-			for(let v of obst) {
-				this.vertices.push(v);
-			}
-		}
+		this.status = "";
+		
+		this.vertices = this.compute_vertices();
 
 		this.edges = this.compute_edges();
 		this.env.edges = Array.from(this.edges);
@@ -24,10 +21,20 @@ class VisibilityGraph {
 	}
 
 	step() {
-		if(this.iteration >= this.edges.length + this.path.length -1)
+		if(this.iteration >= this.edges.length + this.path.length -2)
 			return true;
 		++this.iteration;
 		return false;
+	}
+
+	compute_vertices() {
+		let vertices = [this.env.init, this.env.goal];
+		for(let obst of this.env.obstacles) {
+			for(let v of obst) {
+				vertices.push(v);
+			}
+		}
+		return vertices;
 	}
 
 	compute_edges() {
@@ -64,6 +71,7 @@ class VisibilityGraph {
 			}
 
 			if (vertex_equals(current[0], this.env.goal)) {
+				this.path_length = current[1];
 				return this.reconstruct_path(came_from, current[0]);
 			}
 
@@ -90,7 +98,6 @@ class VisibilityGraph {
 				// neighbour shape: vertex
 				// current shape:[vertex, g_score]
 				came_from[neighbour] = current[0];
-
 			}
 		}
 	}
@@ -103,6 +110,9 @@ class VisibilityGraph {
 			current = came_from[current];
 			path.push(current);
 		}
+		this.status = "Path found. Path length: " + this.path_length.toFixed(2);
+		//TODO: path length
+
 		return path;
 	}
 

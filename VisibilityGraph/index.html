@@ -1,59 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Robotics</title>
-    <style>
-      body {
-        font-family: Helvetica, sans-serif;
-        display: flex;
-        flex-wrap: wrap;
-      }
-
-      #canvas_div {
-      	padding: 10px;
-	      flex-direction:column;
-      }
-
-      #info_div {
-
-				padding: 5%;
-        /*background-color: #b0b0b0;*/
-        min-height: 1em;
-        min-width: 200px;
-      }
-    </style>
-    <script src="../js/geometry.js">         </script>
-    <script src="../js/environment.js">      </script>
-    <script src="../js/visibilityGraph.js">  </script>
-    <script src="../js/button.js">           </script>
-  </head>
+  <meta charset="utf-8">
+  <title>Robotics</title>
+  <style>
+    body {
+      font-family: Helvetica, sans-serif;
+      display: flex;
+      flex-direction:column;
+      margin:3%;
+    }
+    #main_div {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    #canvas_div {
+     flex-direction:column;
+    }
+    #info_div {
+      margin: 4%;
+      margin-top: 2%;
+      padding: 1%;
+      /*background-color: #f0f0f0;*/
+      /*flex-shrink: 0;*/
+      flex-grow: 0;
+      flex-basis: 30em;
+      font-family: monospace;
+      color: dimgrey;
+    }
+    h1 {
+      font-size: 1.4em;
+    }
+  </style>
+  <script src="../js/geometry.js">         </script>
+  <script src="../js/environment.js">      </script>
+  <script src="../js/visibilityGraph.js">  </script>
+  <script src="../js/button.js">           </script>
+</head>
 <body>
-<div id=canvas_div>
-  <h3>Visibility Graph</h3>
-  <canvas id="canvas1" >
-  Your browser does not support the HTML5 canvas tag.</canvas>
-  <div id =canvas_buttons_div>
-    <input id="stepButton" type="button" onclick="step_button(env, planner, c1, info)" value="Step"></input>
-    <input id="playButton" type="button" onclick="play_button(env, planner, c1, info)" value="Play"></input>
-  	<input id="refreshButton" type="button" onclick="refresh_button()" value="Generate new instance"></input>
+  <div id=title_div><h1>Visibility Graph</h1></div>
+  <div id=main_div>
+    <div id=canvas_div>
+      <canvas id="canvas1" >
+      Your browser does not support the HTML5 canvas tag.</canvas>
+      <div id =canvas_buttons_div>
+        <input id="stepButton" type="button" onclick="step_button(env, planner, c1, info)" value="Step"></input>
+        <input id="playButton" type="button" onclick="play_button(env, planner, c1, info)" value="Play"></input>
+        <input id="refreshButton" type="button" onclick="refresh_button()" value="Generate new instance"></input>
+      </div>
+    </div>
+    <div id=info_div> </div>
   </div>
-</div>
-
-<div id=info_div> </div>
-
-<script>
+  <script>
 //window.requestAnimationFrame(animate);
 
 var c1 = document.getElementById("canvas1");
 var info = document.getElementById("info_div");
 
-let min = Math.min(window.innerWidth, window.innerHeight);
-c1.height = min*0.8;
-c1.width = min*0.8;
+let env_size = Math.min(0.8 * window.innerWidth, 0.75 * window.innerHeight);
+c1.height = env_size;
+c1.width = env_size;
+info.style.flexBasis = env_size;
 
-let env = new Environment(min*0.8, 3);
+let num_obst = 3;
+let env = new Environment(env_size, num_obst);
 let planner = new VisibilityGraph(env);
+
+let p = document.createElement("p");
+info.appendChild(p);
+p.innerHTML = "Grid size: " + env_size.toString() + "x" + env_size.toString();
+
+p = document.createElement("p");
+info.appendChild(p);
+p.innerHTML = "Number of obstacles: " + (num_obst).toString();
+
+p = document.createElement("p");
+info.appendChild(p);
+p.innerHTML = "Distance initial position to goal: " + (euclidean_distance(env.goal, env.init)).toFixed(2);
 
 env.draw(c1);
 </script>
