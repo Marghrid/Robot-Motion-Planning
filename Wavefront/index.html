@@ -7,15 +7,15 @@
       body {
         font-family: Helvetica, sans-serif;
         display: flex;
+        flex-wrap: wrap;
       }
 
       #canvas_div {
-        flex: 60%;
         padding: 10px;
+        flex-direction:column;
       }
 
       #info_div {
-        flex: 40%;
         padding: 5%;
         /*background-color: #f0f0f0;*/
         min-height: 1em;
@@ -29,11 +29,12 @@
 <body>
 <div id=canvas_div>
   <h3>Wave-front algorithm</h3>
-  <canvas id="canvas1" width="512" height="512">
+  <canvas id="canvas1">
   Your browser does not support the HTML5 canvas tag.</canvas>
-
-  <input id="stepButton" type="button" onclick="step_button(gr, wf, c1, info)" value="Step"></input>
-  <input id="playButton" type="button" onclick="play_button(gr, wf, c1, info)" value="Play"></input>
+  <div id =canvas_buttons_div>
+    <input id="stepButton" type="button" onclick="step_button(gr, wf, c1, info)" value="Step"></input>
+    <input id="playButton" type="button" onclick="play_button(gr, wf, c1, info)" value="Play"></input>
+  </div>
 </div>
 
 <div id=info_div> </div>
@@ -44,13 +45,17 @@
 var c1 = document.getElementById("canvas1");
 var info = document.getElementById("info_div");
 
+let min = Math.min(window.innerWidth, window.innerHeight);
+c1.width = min * 0.8;
+c1.height = min * 0.8;
+
 // resolution random between 8 and 32
-res = Math.floor(Math.random()*3) + 3;
+let res = Math.floor(Math.random()*3) + 3;
 res = Math.pow(2, res);
 
 // number of obstacles is half of resolution
 // size of obstacles is a quarter of resolution
-let gr = new Grid(512, res, res/2, res/4);
+let gr = new Grid(0.8*min, res, res/2, res/4);
 let wf = new Wavefront(gr);
 gr.draw(c1);
 </script>

@@ -7,16 +7,17 @@
       body {
         font-family: Helvetica, sans-serif;
         display: flex;
+        flex-wrap: wrap;
       }
 
       #canvas_div {
-        flex: 70%;
-        padding: 10px;
+      	padding: 10px;
+	      flex-direction:column;
       }
 
       #info_div {
-        flex: 30%;
-        padding: 5%;
+
+				padding: 5%;
         /*background-color: #b0b0b0;*/
         min-height: 1em;
         min-width: 200px;
@@ -30,12 +31,13 @@
 <body>
 <div id=canvas_div>
   <h3>Visibility Graph</h3>
-  <canvas id="canvas1" width="512" height="512">
+  <canvas id="canvas1" >
   Your browser does not support the HTML5 canvas tag.</canvas>
-
-  <input id="stepButton" type="button" onclick="step_button(env, planner, c1, info)" value="Step"></input>
-  <input id="playButton" type="button" onclick="play_button(env, planner, c1, info)" value="Play"></input>
-  <input id="refreshButton" type="button" onclick="refresh_button()" value="Generate new instance"></input>
+  <div id =canvas_buttons_div>
+    <input id="stepButton" type="button" onclick="step_button(env, planner, c1, info)" value="Step"></input>
+    <input id="playButton" type="button" onclick="play_button(env, planner, c1, info)" value="Play"></input>
+  	<input id="refreshButton" type="button" onclick="refresh_button()" value="Generate new instance"></input>
+  </div>
 </div>
 
 <div id=info_div> </div>
@@ -46,10 +48,14 @@
 var c1 = document.getElementById("canvas1");
 var info = document.getElementById("info_div");
 
-let env = new Environment(512, 3);
-let planner = new VisibilityGraph(env);
-env.draw(c1);
+let min = Math.min(window.innerWidth, window.innerHeight);
+c1.height = min*0.8;
+c1.width = min*0.8;
 
+let env = new Environment(min*0.8, 3);
+let planner = new VisibilityGraph(env);
+
+env.draw(c1);
 </script>
 </body>
 </html>

@@ -39,9 +39,9 @@ class Environment {
 		this.ctx.fillStyle = this.background;
 
 		this.ctx.fillStyle = this.init_colour;
-		this.ctx.fillRect(this.init[0]-5, this.init[1]-5, 10, 10);
+		this.ctx.fillRect(this.init[0]-5, this.init[1]-5, this.size/64, this.size/64);
 		this.ctx.fillStyle = this.goal_colour;
-		this.ctx.fillRect(this.goal[0]-5, this.goal[1]-5, 10, 10);
+		this.ctx.fillRect(this.goal[0]-5, this.goal[1]-5, this.size/64, this.size/64);
 		this.ctx.fillStyle = this.background;
 	}
 
