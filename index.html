@@ -6,6 +6,25 @@
     <style>
       body {
         font-family: Helvetica, sans-serif;
+        display: flex;
+        flex-direction: column;
+        max-width: 700px;
+        margin:5%;
+        margin-top:2%;
+      }
+
+      q {
+      	font-style: italic;
+      }
+
+      h1, h2, h3, h4, h5, h6, p{
+      	margin-bottom: 0em;
+      }
+      h1 {
+      	font-size: 2.3em;
+      }
+      h2 {
+      	margin-top: 2em;
       }
 
     </style>
@@ -17,11 +36,22 @@
 <!-- <p><a href="Bug1/index.html"> Bug 1</a></p> -->
 <!-- <p><a href="Bug2/index.html"> Bug 2</a></p> -->
 
-<h3> Potential Field Path Planning </h3>
+<h2> Potential Field Path Planning </h2>
+
+
+<h4>Brushfire algorithm</h4>
+<p><q>The brushfire algorithm uses a grid to approximate distance, and hence the repul- sive function. It produces a map of distance values to the nearest obstacle.</q></p>
 <p><a href="Brushfire/index.html"> Brushfire algorithm</a></p>
+
+<h4>Wave-front algorithm</h4>
+<p><q>The wave-front planner affords the simplest solution to the local minima problem, but can only be implemented in spaces that are represented as grids.</q></p>
 <p><a href="Wavefront/index.html"> Wave-front algorithm</a></p>
 
-<h3> Roadmaps </h3>
+<h2> Roadmaps </h2>
+<p><q>If we knew that many paths were to be planned in the same environment, then it would make sense to construct a data structure once and then use that data structure to plan subsequent paths more quickly. This data structure is often called a map, and mapping is the task of generating models of robot environments from sensor data.</q></p>
+
+<h4>Visibility Graph</h4>
+<p><q>The defining characteristics of a visibility map are that its nodes share an edge if they are within line of sight of each other, and that all points in the robot’s free space are within line of sight of at least one node on the visibility map.</q></p>
 <p><a href="VisibilityGraph/index.html"> Visibility Graph</a></p>
 </body>
 </html>

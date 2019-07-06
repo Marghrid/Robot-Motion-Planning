@@ -10,12 +10,12 @@
       }
 
       #canvas_div {
-        flex: 60%;
+        flex: 70%;
         padding: 10px;
       }
 
       #info_div {
-        flex: 40%;
+        flex: 30%;
         padding: 5%;
         /*background-color: #b0b0b0;*/
         min-height: 1em;
@@ -33,8 +33,9 @@
   <canvas id="canvas1" width="512" height="512">
   Your browser does not support the HTML5 canvas tag.</canvas>
 
-  <input id="stepButton" type="button" onclick="step_button(env, vg, c1, info)" value="Step"></input>
-  <input id="playButton" type="button" onclick="play_button(env, vg, c1, info)" value="Play"></input>
+  <input id="stepButton" type="button" onclick="step_button(env, planner, c1, info)" value="Step"></input>
+  <input id="playButton" type="button" onclick="play_button(env, planner, c1, info)" value="Play"></input>
+  <input id="refreshButton" type="button" onclick="refresh_button()" value="Generate new instance"></input>
 </div>
 
 <div id=info_div> </div>
@@ -46,7 +47,7 @@ var c1 = document.getElementById("canvas1");
 var info = document.getElementById("info_div");
 
 let env = new Environment(512, 3);
-let vg = new VisibilityGraph(env);
+let planner = new VisibilityGraph(env);
 env.draw(c1);
 
 </script>

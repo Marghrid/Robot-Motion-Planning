@@ -17,6 +17,8 @@ function step_button(grid, planning, canvas, info) {
 	
 	if(planning_done) {
 		document.getElementById("playButton").value = "Play";
+		document.getElementById("playButton").disabled = true;
+		document.getElementById("stepButton").disabled = true;
 		info.innerHTML += "<p>Done!</p>"
 		clearInterval(timerId);
 		done = true;
@@ -36,4 +38,8 @@ function play_button(grid, planning, canvas, info) {
 		play = false;
 	}
 	
+}
+
+function refresh_button() {
+	location.reload();
 }
