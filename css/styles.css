@@ -1,0 +1,31 @@
+body {
+	font-family: Helvetica, sans-serif;
+	display: flex;
+	flex-direction:column;
+	margin:3%;
+	justify-content: space-evenly;
+	align-items: stretch;
+}
+#main_div {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+#canvas_div {
+	flex-direction:column;
+	flex-grow: 0;
+}
+#info_div {
+	padding: 1%;
+	margin:3%;
+	/*background-color: #f0f0f0;*/
+	flex-grow: 1;
+	flex-shrink: 1;
+	flex-basis: 22em;
+	max-width: 35em;
+	font-family: monospace;
+	color: dimgrey;
+}
+h1 {
+	font-size: 125%;
+}

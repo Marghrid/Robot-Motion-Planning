@@ -97,7 +97,9 @@ class Grid {
 		let y = cell[1];
 		this.ctx.fillStyle = "black";
 		this.ctx.font = (this.cell_size/2).toString() + "px Arial";
-		this.ctx.fillText(text, (x+.25)*this.cell_size, (y+.75)*this.cell_size);
+		this.ctx.textAlign="center"; 
+		this.ctx.textBaseline = "middle";
+		this.ctx.fillText(text, (x+.5)*this.cell_size, (y+.5)*this.cell_size);
 		this.ctx.fillStyle = this.background;
 	}
 
@@ -117,7 +119,6 @@ class Grid {
 				this.ctx.moveTo(0, i*this.cell_size);
 				this.ctx.lineTo(this.size, i*this.cell_size);
 				this.ctx.stroke();
-
 			}
 
 		// Draw obstacles:

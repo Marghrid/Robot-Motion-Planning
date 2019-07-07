@@ -3,35 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Robotics</title>
-  <style>
-    body {
-      font-family: Helvetica, sans-serif;
-      display: flex;
-      flex-direction:column;
-      margin:3%;
-    }
-    #main_div {
-      display: flex;
-      flex-wrap: wrap;
-    }
-    #canvas_div {
-      flex-direction:column;
-    }
-    #info_div {
-      margin: 4%;
-      margin-top: 2%;
-      padding: 1%;
-      /*background-color: #f0f0f0;*/
-      /*flex-shrink: 0;*/
-      flex-grow: 0;
-      flex-basis: 30em;
-      font-family: monospace;
-      color: dimgrey;
-    }
-    h1 {
-      font-size: 1.4em;
-    }
-  </style>
+  <link rel="stylesheet" href="../css/styles.css">
   <script src="../js/grid.js">        </script>
   <script src="../js/button.js">      </script>
   <script src="../js/wavefront.js">   </script>
@@ -58,7 +30,7 @@
 var c1 = document.getElementById("canvas1");
 var info = document.getElementById("info_div");
 
-let canvas_size = Math.min(0.8 * window.innerWidth, 0.75 * window.innerHeight);
+let canvas_size = Math.floor(Math.min(0.85 * window.innerWidth, 0.75 * window.innerHeight));
 c1.width = canvas_size;
 c1.height = canvas_size;
 
