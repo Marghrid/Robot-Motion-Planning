@@ -20,14 +20,6 @@ function step_button(grid, planning, canvas, info) {
 		let new_text = step_count.toString() + " ";
 		paragraph.innerHTML += new_text;
 		current_line_length += new_text.length;
-/*
-		if (current_line_length > 48) /* New line  {
-			//paragraph = document.createElement("p");
-			//info.appendChild(paragraph);
-			paragraph.innerHTML += "<br>";
-			current_line_length = 0;
-		}*/
-
 	}
 	let planning_done = planning.step();
 

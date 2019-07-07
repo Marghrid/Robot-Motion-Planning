@@ -17,26 +17,43 @@ class Environment {
 		this.goal = [0, 0]
 		this.init = [0, 0]
 
-		while(euclidean_distance(this.goal, this.init) < this.size 
-			||  this.inside_obstacle(this.init) || this.inside_obstacle(this.goal)) {
-				this.goal = [Math.random() * (this.size*0.9) + this.size*0.05, Math.random() * (this.size*0.9) + this.size*0.05];
-				this.init = [Math.random() * (this.size*0.9) + this.size*0.05, Math.random() * (this.size*0.9) + this.size*0.05];
+		while(euclidean_distance(this.goal, this.init) < this.size
+			|| this.inside_obstacle(this.init) || this.inside_obstacle(this.goal)) {
+			
+			this.goal = [Math.random() * (this.size*0.9) + this.size*0.05, Math.random() * (this.size*0.9) + this.size*0.05];
+			this.init = [Math.random() * (this.size*0.9) + this.size*0.05, Math.random() * (this.size*0.9) + this.size*0.05];
 		}
+	}
+
+	draw_polygon(poly, colour) {
+		this.ctx.fillStyle = colour;
+		this.ctx.beginPath();
+		this.ctx.moveTo(poly[0][0], poly[0][1]);
+		for(let pos of poly)
+			this.ctx.lineTo(pos[0], pos[1]);
+
+		this.ctx.closePath();
+		this.ctx.fill();
+		this.ctx.fillStyle = this.background;
+	}
+
+	draw_line(p, q, colour, width = 1) {
+		this.ctx.strokeStyle = colour;
+		this.ctx.lineWidth = width;
+		this.ctx.beginPath();
+		this.ctx.moveTo(p[0], p[1]);
+		this.ctx.lineTo(q[0], q[1]);
+		this.ctx.stroke();
+		this.ctx.strokeStyle = this.background;
+		this.ctx.lineWidth = 1;
 	}
 
 	draw(canvas) {
 		this.ctx = canvas.getContext('2d');
-		this.ctx.fillStyle = this.obst_colour;
-		this.ctx.beginPath();
+		
 		for (let obst of this.obstacles) {
-			this.ctx.moveTo(obst[0][0], obst[0][1]);
-			for(let pos of obst) {
-				this.ctx.lineTo(pos[0], pos[1]);
-			}
+			this.draw_polygon(obst, this.obst_colour);
 		}
-		this.ctx.closePath();
-		this.ctx.fill();
-		this.ctx.fillStyle = this.background;
 
 		this.ctx.fillStyle = this.init_colour;
 		this.ctx.fillRect(this.init[0]-5, this.init[1]-5, this.size/64, this.size/64);
@@ -48,29 +65,12 @@ class Environment {
 	update() {
 		if(this.edges.length > 0) {
 			let e = this.edges.pop();
-			this.ctx.strokeStyle = this.edge_colour;
-			this.ctx.beginPath();
-			this.ctx.moveTo(e[0][0], e[0][1]);
-			this.ctx.lineTo(e[1][0], e[1][1]);
-			this.ctx.stroke();
-			this.ctx.strokeStyle = this.background;
+			this.draw_line(e[0], e[1], this.edge_colour);
 		} 
 		else if(this.path.length > 1) {
 			let v = this.path.shift(); //pop from the beginning;
-			this.ctx.strokeStyle = this.path_colour;
-			this.ctx.lineWidth = 5;
-			this.ctx.beginPath();
-			this.ctx.moveTo(v[0], v[1]);
-			this.ctx.lineTo(this.path[0][0], this.path[0][1]);
-			this.ctx.stroke();
-
-			this.ctx.lineWidth = 1;
-			this.ctx.strokeStyle = this.edge_colour;
-			this.ctx.beginPath();
-			this.ctx.moveTo(v[0], v[1]);
-			this.ctx.lineTo(this.path[0][0], this.path[0][1]);
-			this.ctx.stroke();
-			this.ctx.strokeStyle = this.background;
+			this.draw_line(v, this.path[0], this.path_colour, 5);
+			this.draw_line(v, this.path[0], this.edge_colour);
 		}
 	}
 
@@ -78,6 +78,18 @@ class Environment {
 		for (let ob of this.obstacles) {
 			if(polygons_intersect(poly, ob)) {
 				return false;
+			}
+
+			for (let v1 of poly) {
+				for (let v2 of poly) {
+					if(vertex_equals(v1, v2)) continue;
+					if (Math.abs(v1[0] - v2[0]) < 5) return false;
+					if (Math.abs(v1[1] - v2[1]) < 5) return false;
+				}
+				for (let v2 of ob) {
+					if (Math.abs(v1[0] - v2[0]) < 5) return false;
+					if (Math.abs(v1[1] - v2[1]) < 5) return false;
+				}
 			}
 		}
 		if(polygons_intersect(poly, [[0,0], [0,this.size], [this.size, this.size], [this.size,0]])) {
@@ -107,9 +119,9 @@ class Environment {
 
 	visible(p,q) {
 		for (let obs of this.obstacles) {
-			if (intersect_polygon([p,q], obs))
+			if (intersect_polygon([p,q], obs).length > 0)
 				return false;
-			if (inside_polygon([(p[0] + q[0])/2 ,(p[1] + q[1])/2], obs, 500))
+			if (inside_polygon([(p[0] + q[0])/2 ,(p[1] + q[1])/2], obs))
 				return false;
 		}
 		return true;

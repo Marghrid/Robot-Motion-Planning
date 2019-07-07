@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Robotics</title>
+    <style>
+      body {
+        font-family: Helvetica, sans-serif;
+        display: flex;
+      }
+
+      #canvas_div {
+        flex: 60%;
+        padding: 10px;
+      }
+
+      #info_div {
+        flex: 40%;
+        padding: 5%;
+        /*background-color: #b0b0b0;*/
+        min-height: 1em;
+        min-width: 200px;
+      }
+    </style>
+    <script src="../js/geometry.js">        </script>
+    <script src="../js/environment.js">        </script>
+    <script src="../js/button.js">      </script>
+  </head>
+<body>
+<div id=canvas_div>
+  <h3>Bug1 algorithm</h3>
+  <canvas id="canvas1" width="512" height="512">
+  Your browser does not support the HTML5 canvas tag.</canvas>
+
+  <input id="stepButton" type="button" onclick="step_button(gr, bf, c1, info)" value="Step"></input>
+  <input id="playButton" type="button" onclick="play_button(gr, bf, c1, info)" value="Play"></input>
+</div>
+
+<div id=info_div> </div>
+
+<script>
+//window.requestAnimationFrame(animate);
+
+var c1 = document.getElementById("canvas1");
+var info = document.getElementById("info_div");
+
+let env = new Environment(512, 3);
+env.draw(c1);
+
+</script>
+</body>
+</html>

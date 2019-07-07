@@ -1,6 +1,6 @@
 // Given three colinear points p, q, r, the function checks if 
 // point q lies on line segment 'pr' 	
-function onSegment(p, q, r) { 
+function on_segment(p, q, r) { 
 	if (q[0] <= Math.max(p[0], r[0])  &&  q[0] >= Math.min(p[0], r[0]) && 
 		q[1] <= Math.max(p[1], r[1])  &&  q[1] >= Math.min(p[1], r[1])) 
 		return true; 
@@ -39,18 +39,17 @@ function line_segments_intersect(p1, q1, p2, q2) {
 
 	// Special Cases 
 	// p1, q1 and p2 are colinear and p2 lies on segment p1q1 
-	if (o1 == 0 && onSegment(p1, p2, q1)) return true;
+	if (o1 == 0 && on_segment(p1, p2, q1)) return true;
 	// p1, q1 and q2 are colinear and q2 lies on segment p1q1 
-	if (o2 == 0 && onSegment(p1, q2, q1)) return true;
+	if (o2 == 0 && on_segment(p1, q2, q1)) return true;
 	// p2, q2 and p1 are colinear and p1 lies on segment p2q2 
-	if (o3 == 0 && onSegment(p2, p1, q2)) return true;
-	 // p2, q2 and q1 are colinear and q1 lies on segment p2q2 
-	 if (o4 == 0 && onSegment(p2, q1, q2)) return true;
+	if (o3 == 0 && on_segment(p2, p1, q2)) return true;
+	// p2, q2 and q1 are colinear and q1 lies on segment p2q2 
+	if (o4 == 0 && on_segment(p2, q1, q2)) return true;
 
 	return false; // Doesn't fall in any of the above cases 
 }
-
-
+/*
 // The main function that returns true if line segment 'p1q1' 
 // and 'p2q2' intersect. 
 function line_segments_intersect2(p1, q1, p2, q2) { 
@@ -66,35 +65,7 @@ function line_segments_intersect2(p1, q1, p2, q2) {
 
 	return false;
 }
-
-function lines_intersection(p1, p2, p3, p4) {
-	x1 = p1[0];
-	y1 = p1[1];
-	x2 = p2[0];
-	y2 = p2[1];
-	x3 = p3[0];
-	y3 = p3[1];
-	x4 = p4[0];
-	y4 = p4[1];
-
-	x12 = x1-x2;
-	x13 = x1-x3;
-	x34 = x3-x4;
-	y12 = y1-y2;
-	y13 = y1-y3;
-	y34 = y3-y4;
-
-	den = x12*y34 - x34*y12;
-
-	if(den == 0)
-		return [-1,-1];
-
-	ta = (y34*x13 - x34*y13)/den;
-	tb = (y12*x13 - x12*y13)/den;
-
-	return [x1+ta*(x2-x1), y1+ta*(y2-y1)];
-}
-
+*/
 function line_segments_intersect3(p1, p2, p3, p4) { 
 	x1 = p1[0];
 	y1 = p1[1];
@@ -123,6 +94,34 @@ function line_segments_intersect3(p1, p2, p3, p4) {
 	return ta > 0 && ta < 1 && tb > 0 && tb < 1;
 }
 
+function lines_intersection(p1, p2, p3, p4) {
+	x1 = p1[0];
+	y1 = p1[1];
+	x2 = p2[0];
+	y2 = p2[1];
+	x3 = p3[0];
+	y3 = p3[1];
+	x4 = p4[0];
+	y4 = p4[1];
+
+	x12 = x1-x2;
+	x13 = x1-x3;
+	x34 = x3-x4;
+	y12 = y1-y2;
+	y13 = y1-y3;
+	y34 = y3-y4;
+
+	den = x12*y34 - x34*y12;
+
+	if(den == 0)
+		return [];
+
+	ta = (y34*x13 - x34*y13)/den;
+	tb = (y12*x13 - x12*y13)/den;
+
+	return [x1+ta*(x2-x1), y1+ta*(y2-y1)];
+}
+
 function polygons_intersect(p, q) {
 	for(let i = 0; i < p.length; ++i) {
 		for(let j = 0; j < q.length; ++j) {
@@ -144,13 +143,13 @@ function polygons_intersect(p, q) {
 }
 
 // Returns true if the point p lies inside the polygon[] with n vertices 
-function inside_polygon(p, polygon, infinite) 
-{ 
+function inside_polygon(p, polygon) {
+
 	// There must be at least 3 vertices in polygon[] 
 	if (polygon.length < 3)  return false; 
   
-	// Create a point for line segment from p to infinite 
-	let extreme = [1024, p[1]]; 
+	// Create a point for line segment from p to infinite left 
+	let extreme = [0, p[1]]; 
   
 	// Count intersections of the above line with sides of polygon 
 	let count = 0;
@@ -224,15 +223,41 @@ function intersect_polygon(r, poly) {
   
 		// Check if the line segment from 'p' to 'extreme' intersects 
 		// with the line segment from 'poly[i]' to 'poly[next]' 
-		if((r[0] == poly[i] && r[1] == poly[next]) || (r[1] == poly[i] && r[0] == poly[next])) {
-			return false;
+		if((vertex_equals(r[0], poly[i]) && vertex_equals(r[1], poly[next]))
+			|| (vertex_equals(r[1], poly[i]) && vertex_equals(r[0], poly[next]))) {
+			return [];
 		}
-		if (line_segments_intersect3(poly[i], poly[next], r[0], r[1])) { 
-			return true;
+
+		if (line_segments_intersect3(poly[i], poly[next], r[0], r[1])) {
+			let intersection_point = lines_intersection(poly[i], poly[next], r[0], r[1]);
+			return intersection_point;
 		} 
 		i = next; 
 	} while (i != 0);
-	return false;
+	return [];
+}
+
+function intersect_polygon_inside(r, poly) {
+	let i = 0; 
+	do { 
+		let next = (i+1)%poly.length; 
+  
+		if((r[0] == poly[i] && r[1] == poly[next]) || (r[1] == poly[i] && r[0] == poly[next])) {
+			return [];
+		}
+
+		let intersection_point = lines_intersection(poly[i], poly[next], r[0], r[1]);
+		if (intersection_point.length > 0) {
+			
+			if (intersection_point[0] == r[0][0] && intersection_point[1] == r[0][1])
+				return [];
+			if (intersection_point[0] == r[1][0] && intersection_point[1] == r[1][1])
+				return [];
+			return intersection_point;
+		} 
+		i = next; 
+	} while (i != 0);
+	return [];
 }
 
 function euclidean_distance(p, q) {

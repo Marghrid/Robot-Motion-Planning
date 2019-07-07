@@ -41,10 +41,8 @@ class VisibilityGraph {
 		let edges = [];
 		for(let v of this.vertices) {
 			for(let w of this.vertices) {
-				if(this.lessVertex(v, w)) /* So each pair is evaluated only once */ {
-					if(this.env.visible(v,w)) {
-						edges.push([v,w]);
-					}
+				if(this.lessVertex(v, w) && this.env.visible(v,w)) /* So each pair is evaluated only once */ {
+					edges.push([v,w]);
 				}
 			}
 		}
@@ -111,8 +109,6 @@ class VisibilityGraph {
 			path.push(current);
 		}
 		this.status = "Path found. Path length: " + this.path_length.toFixed(2);
-		//TODO: path length
-
 		return path;
 	}
 
