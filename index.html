@@ -17,20 +17,15 @@
       	font-style: italic;
       }
 
-      h1, h2, h3, h4, h5, h6, p{
-      	margin-bottom: 0em;
+      h1, h2, h3, h3, h5, h6{
+      	font-weight: lighter;
       }
-      h1 {
-      	font-size: 2.3em;
-      }
-      h2 {
-      	margin-top: 2em;
-      }
+
 
     </style>
   </head>
 <body>
-<h1> Robotics fun!</h1>
+<h1> Robot motion</h1>
 
 <!-- <h3>Bug Algorithms</h3> -->
 <!-- <p><a href="Bug1/index.html"> Bug 1</a></p> -->
@@ -39,25 +34,25 @@
 <h2> Potential Field Path Planning </h2>
 
 
-<h4>Brushfire algorithm</h4>
-<p><q>The brushfire algorithm uses a grid to approximate distance, and hence the repul- sive function. It produces a map of distance values to the nearest obstacle.</q></p>
+<h3>Brushfire algorithm</h3>
+<p><q>The brushfire algorithm uses a grid to approximate distance, and hence the repulsive function. It produces a map of distance values to the nearest obstacle.</q></p>
 <p><a href="Brushfire/index.html"> Brushfire algorithm</a></p>
 
-<h4>Wave-front algorithm</h4>
+<h3>Wave-front algorithm</h3>
 <p><q>The wave-front planner affords the simplest solution to the local minima problem, but can only be implemented in spaces that are represented as grids.</q></p>
 <p><a href="Wavefront/index.html"> Wave-front algorithm</a></p>
 
 <h2>Roadmaps</h2>
 <p><q>If we knew that many paths were to be planned in the same environment, then it would make sense to construct a data structure once and then use that data structure to plan subsequent paths more quickly. This data structure is often called a map, and mapping is the task of generating models of robot environments from sensor data.</q></p>
 
-<h4>Visibility Graph</h4>
+<h3>Visibility Graph</h3>
 <p><q>The defining characteristics of a visibility map are that its nodes share an edge if they are within line of sight of each other, and that all points in the robot’s free space are within line of sight of at least one node on the visibility map.</q></p>
 <p><a href="VisibilityGraph/index.html"> Visibility Graph</a></p>
 
 <h2>Cell decompositions</h2>
 <p><q>These structures represent the free space by the union of simple regions called cells. The shared boundaries of cells often have a physical meaning such as a change in the closest obstacle or a change in line of sight to surrounding obstacles.</q></p>
 
-<h4>Trapezoidal Decomposition</h4>
+<h3>Trapezoidal Decomposition</h3>
 <p><q>The trapezoidal decomposition comprises two-dimensional cells that are shaped like trapezoids. Some cells can be shaped like triangles, which can be viewed as degenerate trapezoids where one of the parallel sides has a zero-length edge. To form the decomposition, at each vertex draw two segments, one called an upper vertical extension and the other called a lower vertical extension. The upper and lower vertical extensions start at the vertex and terminate when they first intersect an edge of the polygon that lies immediately above and below it, respectively.</q></p>
 <p><a href="Trapezoidal/index.html">Trapezoidal Decomposition</a></p>
 </body>
